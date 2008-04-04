@@ -1,0 +1,8 @@
+-R . ZSearchTrees
+search_tree.v
+extraction.v
+-custom
+	"@echo '********* Test on one example **********'
+	ocaml test.ml
+	@echo '************ End of test ***************'"
+  "" test
