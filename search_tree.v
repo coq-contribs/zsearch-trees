@@ -434,13 +434,10 @@ let rec insert n t x =
 
 
 Require Export List.
-Require Export TheoryList.
 
 Hint Resolve in_nil: searchtrees.
 
 Hint Resolve in_inv: searchtrees.
-
-Hint Resolve in_hd in_tl: searchtrees.
 
 
 (* Construction of a binary search tree containing the elements of
