@@ -307,7 +307,7 @@ Lemma insert_leaf : forall n : Z, INSERT n Z_leaf (Z_bnode n Z_leaf Z_leaf).
 Proof.
  intro n; split; auto with searchtrees.
  intros p H; inversion_clear H; auto with searchtrees. 
-Qed.
+Defined.
 Hint Resolve insert_leaf: searchtrees.
 
 
@@ -342,7 +342,7 @@ Proof.
  simple induction 1; auto with searchtrees.
  auto with searchtrees.
  eapply min_r; eauto with searchtrees.
-Qed.
+Defined.
 
 
 Lemma insert_r :
@@ -370,7 +370,7 @@ Proof.
  simple induction 1; auto with searchtrees.
  apply Zgt_lt.
  assumption.
-Qed.
+Defined.
 
 
 
@@ -379,7 +379,7 @@ Lemma insert_eq :
  search (Z_bnode n t1 t2) -> INSERT n (Z_bnode n t1 t2) (Z_bnode n t1 t2).
 Proof.
  auto with searchtrees.
-Qed.
+Defined.
 
 Hint Resolve insert_l insert_r insert_eq: searchtrees.
 
@@ -409,7 +409,7 @@ Proof.
          end
      end); eauto with searchtrees.
  rewrite e; eauto with searchtrees.
-Qed.
+Defined.
 Hint Resolve insert: searchtrees.
 
 Extraction insert.
