@@ -400,7 +400,7 @@ Proof.
                  match insert n t1 _ with
                  | exist t3 _ => exist _ (Z_bnode p t3 t2) _
                  end
-             | right _ => exist _ (Z_bnode n t1 t2) _
+             | right e => exist _ (Z_bnode n t1 t2) _
              end
          | right _ =>
              match insert n t2 _ with
@@ -465,9 +465,9 @@ refine
     | p :: l' =>
         fun s =>
         match insert p (t:=t) s with
-        | exist t' _ =>
+        | exist t' i =>
             match list2trees_aux l' t' _ with
-            | exist t'' _ => exist _ t'' _
+            | exist t'' a => exist _ t'' _
             end
         end
     end).
@@ -514,7 +514,7 @@ Definition list2trees : forall l : list Z, list2trees_spec l.
  refine
   (fun l =>
    match list2trees_aux l (t:=Z_leaf) _ with
-   | exist t _ => exist _ t _
+   | exist t a => exist _ t _
    end).
  eauto with searchtrees.
  case a; auto.
@@ -1076,7 +1076,7 @@ refine
                  match rm t1 _ with
                  | exist t'1 _ => exist _ (Z_bnode p t'1 t2) _
                  end
-             | right _ =>
+             | right e =>
                  match
                    t1 as t'
                    return
