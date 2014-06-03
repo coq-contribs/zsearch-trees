@@ -16,6 +16,7 @@
 Global Set Asymmetric Patterns.
 Set Implicit Arguments.
 Unset Strict Implicit.
+Unset Standard Proposition Elimination Names.
 
 Require Export ZArith_base.
 
