@@ -660,7 +660,7 @@ Section RMAX_np.
       elim R1.
       intros H0 H1 H2 H3 H4 H5.
       elim (occ_inv H); intro H6.
-      elim H6; apply Zlt_le_weak; auto with searchtrees v62 zarith.
+      elim H6; apply Zlt_le_weak; auto with searchtrees zarith.
       elim H6; intro H7.
       elim (maj_l S1). 
       intro H8.
