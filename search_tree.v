@@ -69,7 +69,7 @@ Definition naive_sch : forall (n : Z) (t : Z_btree), {occ n t} + {~ occ n t}.
  simple induction t.
  right; auto with searchtrees.
  intros z t0 H0 t1 H1.
- case (Z_eq_dec n z).
+ case (Z.eq_dec n z).
  simple induction 1; left; auto with searchtrees.
  case H0; case H1; intros; auto with searchtrees.
  right; intro H; elim (occ_inv H); auto with searchtrees.
@@ -136,7 +136,7 @@ Lemma maj_not_occ : forall (z : Z) (t : Z_btree), maj z t -> ~ occ z t.
 Proof.
  unfold not in |- *; intros z t H H'.
  elim H; intros; absurd (z < z)%Z; auto.
- apply Zlt_irrefl.
+ apply Z.lt_irrefl.
 Qed.
 
 Hint Resolve maj_not_occ: searchtrees.
@@ -145,7 +145,7 @@ Lemma min_not_occ : forall (z : Z) (t : Z_btree), min z t -> ~ occ z t.
 Proof.
  unfold not in |- *; intros z t H H'.
  elim H; intros; absurd (z < z)%Z; auto.
- apply Zlt_irrefl.
+ apply Z.lt_irrefl.
 Qed.
 
 
@@ -221,11 +221,11 @@ Section search_tree_basic_properties.
   elim (occ_inv H).
   simple induction 1; absurd (n < p)%Z. 
   rewrite H1; apply Zle_not_lt; auto with zarith. 
-  apply Zgt_lt; assumption.
+  apply Z.gt_lt; assumption.
   simple destruct 1.    
   intro H2; absurd (occ p t1).
   apply not_left.
-  unfold Zge in |- *; rewrite H0; discriminate. 
+  unfold Z.ge in |- *; rewrite H0; discriminate. 
   auto.
   auto.
  Qed.
@@ -370,7 +370,7 @@ Proof.
  intro.
  elim (min_r H0); auto with searchtrees.
  simple induction 1; auto with searchtrees.
- apply Zgt_lt.
+ apply Z.gt_lt.
  assumption.
 Defined.
 
@@ -567,7 +567,7 @@ Lemma rmax_leaf_leaf : forall n : Z, RMAX (Z_bnode n Z_leaf Z_leaf) Z_leaf n.
 Proof.
  intro n; split; auto with searchtrees.
  intros p H; inversion_clear H; auto with searchtrees.
- apply Zle_refl.
+ apply Z.le_refl.
  absurd (occ p Z_leaf); auto with searchtrees.
  absurd (occ p Z_leaf); auto with searchtrees.
  intros q H; inversion_clear H; auto with searchtrees.
@@ -595,7 +595,7 @@ Proof.
  intro H'; absurd (occ q Z_leaf); auto with searchtrees.  
  apply not_left with n Z_leaf; auto with searchtrees.
  auto with zarith.
- apply Zle_ge.
+ apply Z.le_ge.
  auto with zarith.
  eauto with searchtrees. 
 Qed. 
@@ -648,7 +648,7 @@ Section RMAX_np.
      
      Remark rmax_5 : (n < q)%Z.
      Proof.
-      elim R1; intros; apply Zlt_le_trans with p; auto with searchtrees.
+      elim R1; intros; apply Z.lt_le_trans with p; auto with searchtrees.
      Qed.
 
      Hint Resolve rmax_5: searchtrees.
@@ -667,7 +667,7 @@ Section RMAX_np.
       intro H8.
       cut (p0 < n)%Z; auto with searchtrees.
       intro; apply Zlt_le_weak.
-      apply Zlt_trans with n; auto with searchtrees.
+      apply Z.lt_trans with n; auto with searchtrees.
       elim (min_r S1); auto with searchtrees.
      Qed.
 
@@ -692,12 +692,12 @@ Section RMAX_np.
       intro eg.
       absurd (n < q)%Z.
       rewrite eg.
-      apply Zlt_irrefl.
+      apply Z.lt_irrefl.
       auto with searchtrees.
       simple induction 1; intro H1.
       absurd (occ q t1); auto with searchtrees. 
       apply not_left with n (Z_bnode p t2 t3); auto with searchtrees.
-      apply Zle_ge; elim R1; auto with searchtrees.
+      apply Z.le_ge; elim R1; auto with searchtrees.
       elim R1.
       intros.
       absurd (occ q t'); auto.
@@ -748,13 +748,13 @@ Definition rmax : forall t : Z_btree, rmax_spec t.
          with
          | Z_leaf =>
              fun h h' h'' h''' =>
-             existS (fun q : Z => rmax_sig (Z_bnode r t1 Z_leaf) q) r
+             existT (fun q : Z => rmax_sig (Z_bnode r t1 Z_leaf) q) r
                (exist _ t1 _)
          | Z_bnode n' t'1 t'2 =>
              fun h h' h'' h''' =>
              match rmax t2 _ _ with
-             | existS num (exist t' _) =>
-                 existS
+             | existT num (exist t' _) =>
+                 existT
                    (fun q : Z =>
                     rmax_sig (Z_bnode r t1 (Z_bnode n' t'1 t'2)) q) num
                    (exist _ (Z_bnode r t1 t') _)
@@ -837,7 +837,7 @@ Proof.
  intros n p t1 t2 t' H H0 H1.
  apply rm_intro. unfold not in |- *; intro H2.
  elim (occ_inv H2).
- intro eg; apply Zlt_irrefl with n.
+ intro eg; apply Z.lt_irrefl with n.
  pattern n at 1 in |- *; rewrite eg; auto.  
  intro D; elim D; intro H3. 
  elim H1; auto with searchtrees.
@@ -886,14 +886,14 @@ Proof.
  apply rm_intro.
  unfold not in |- *; intro H2.
  elim (occ_inv H2).
- intro eg; apply Zlt_irrefl with p; auto with searchtrees.
+ intro eg; apply Z.lt_irrefl with p; auto with searchtrees.
  pattern p at 1 in |- *; rewrite <- eg; auto with searchtrees.
  intro D; elim D; intro H3. 
  elim H1; auto with searchtrees.
  absurd (occ p t1).
  apply not_left with n t2; auto with searchtrees.
  auto with searchtrees.
- apply Zle_ge; apply Zlt_le_weak; auto.
+ apply Z.le_ge; apply Zlt_le_weak; auto.
  assumption.
  elim H1; intros; absurd (occ p t'); auto.
  intros p0 H2.
@@ -981,13 +981,13 @@ Section rm_root.
       unfold not in |- *; intro H.
       elim (occ_inv H).
       intro eg; absurd (q < q)%Z; auto with searchtrees.
-      apply Zlt_irrefl.
+      apply Z.lt_irrefl.
       pattern q at 2 in |- *; rewrite eg; auto with searchtrees.
       intro D; elim D; intro H'.
       elim R; intros H0 H1 H2 H3 H4 H5.
       absurd (occ n (Z_bnode p t1 t2)); auto with searchtrees.
       apply not_left with n t'; auto with searchtrees.
-      apply Zle_ge; auto with zarith.
+      apply Z.le_ge; auto with zarith.
       absurd (occ n t'); auto with searchtrees.
       apply not_right with n (Z_bnode p t1 t2); auto with searchtrees.
       auto with zarith. 
@@ -1041,7 +1041,7 @@ Section rm_root.
       auto with searchtrees.
       apply min_intro.
       intros q0 H. 
-      apply Zlt_trans with n. 
+      apply Z.lt_trans with n. 
       elim R; auto with searchtrees.
       elim (min_r (n:=n) (t1:=Z_bnode p t1 t2) (t2:=t')). 
       auto with searchtrees. 
@@ -1088,7 +1088,7 @@ refine
                  | Z_bnode p' t'1 t'2 =>
                      fun h' h'' =>
                      match rmax (t:=Z_bnode p' t'1 t'2) _ _ with
-                     | existS q (exist t4 _) => exist _ (Z_bnode q t4 t2) _
+                     | existT q (exist t4 _) => exist _ (Z_bnode q t4 t2) _
                      end
                  end _ _
              end
@@ -1115,7 +1115,7 @@ refine
  auto with searchtrees.
  eauto with searchtrees.
  apply rm_right; auto.
- apply Zgt_lt; auto.
+ apply Z.gt_lt; auto.
 Defined.
 
 
